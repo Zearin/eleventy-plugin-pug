@@ -2,9 +2,13 @@ import path	from 'node:path'
 import pug	from 'pug'
 import debugUtil from 'debug'
 import DEFAULT_PUG_OPTIONS from './defaults.js'
+import UserConfig from '@11ty/eleventy/src/UserConfig.js'
 
 const debug 	= debugUtil('Eleventy:Plugins:Pug')
 const debugDev 	= debugUtil('Dev:Eleventy:Plugins:Pug')
+
+
+
 
 
 export class EleventyPugExtension {
@@ -12,7 +16,11 @@ export class EleventyPugExtension {
 	outputFileExtension = 'html'
 
 	/**
-	 * @param {module:'@11ty/eleventy/src/UserConfig.js')} eleventyConfig
+	 * @typedef {import('@11ty/eleventy/src/UserConfig.js'))} UserConfig
+	 */
+
+	/**
+	 * @param {UserConfig} eleventyConfig
 	 * @param {Object} opts - Options for this plugin and Pug
 	 */
 	constructor(eleventyConfig, opts) {
