@@ -1,4 +1,4 @@
-/** @type {import {ESLint} from '@types/eslint'} */
+/** @type {import('@types/eslint').ESLint} */
 export default {
 	root: true,
 	env: {
@@ -11,7 +11,7 @@ export default {
 		sourceType: "module",
 	},
 
-	/** @type {import { ESLintRules } from '@types/eslint/rules'} */
+	/** @type {import('@types/eslint/rules').ESLintRules} */
 	rules: {
 		"no-extra-semi": "warn",
 		"eol-last": "error",
