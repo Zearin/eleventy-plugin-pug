@@ -16,7 +16,7 @@ const devDebug 	= debugUtil('Dev:Eleventy:Plugins:Pug')
 
 /**
  * @param {UserConfig} eleventyConfig
- * @param {Object} options
+ * @param {Object} [options={}]
  */
 export default function EleventyPluginPug(eleventyConfig, options = {}) {
 
