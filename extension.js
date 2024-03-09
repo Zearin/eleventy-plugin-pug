@@ -4,11 +4,9 @@ import debugUtil from 'debug'
 import DEFAULT_PUG_OPTIONS from './defaults.js'
 import UserConfig from '@11ty/eleventy/src/UserConfig.js'
 
+
 const debug 	= debugUtil('Eleventy:Plugins:Pug')
 const debugDev 	= debugUtil('Dev:Eleventy:Plugins:Pug')
-
-
-
 
 
 export class EleventyPugExtension {
@@ -16,16 +14,12 @@ export class EleventyPugExtension {
 	outputFileExtension = 'html'
 
 	/**
-	 * @typedef {import('@11ty/eleventy/src/UserConfig.js'))} UserConfig
+	 *	@param {UserConfig} eleventyConfig
+	 *	@param {Object} [opts] - Options for this plugin and Pug
 	 */
-
-	/**
-	 * @param {UserConfig} eleventyConfig
-	 * @param {Object} opts - Options for this plugin and Pug
-	 */
-	constructor(eleventyConfig, opts) {
-		this.options = opts
+	constructor(eleventyConfig, opts = DEFAULT_PUG_OPTIONS) {
 		this.eleventyConfig = eleventyConfig
+		this.options = opts
 
 		//	Update Pug options based on eleventyConfig
 		this.options.basedir ??= path.resolve(
@@ -34,46 +28,42 @@ export class EleventyPugExtension {
 		)
 	}
 
-	//	Probably the trickiest part of this plugin is getting
-	//	Eleventy data *accurately* into Pug
-	//
-	//	this is just a first guess...
-	get globals() {
-		return {
-			...this.eleventyConfig.globalData,
-			...this.options.globals
-		}
-	}
-
 	// async init(opts = this.options) {}
 
-	async compile(inputSource, inputPath) {
+	/**
+	 *	Provides runtime Pug compilation for Eleventy.
+	 *	@param {String} inputSource - Source of the input file
+	 *	@param {String} inputPath   - Path of the input file
+	 *	@returns {String} The resulting code returned by Pug (currently, `pug.render()`).
+	 */
+	compile(inputSource, inputPath) {
 		debugDev('inputSource: %s', inputSource)
-		debugDev('inputPath: %s', inputPath)
+		debugDev('inputPath: %s',	inputPath)
 
 		//	sometimes this is a layout, in which case it will
 		//	not be the same as `page.inputPath` (see `page`, below).
-		const resInputPath = path.resolve('.', inputPath)
-		debug('compile resolved input path: %s', resInputPath)
+		const filename = path.resolve('.', inputPath)
+		debug('compile resolved inputPath to filename: %s', filename)
 
-		return async function(arg) {
-			debugDev('rendering... received arg: %O', arg)
+		/** @param {Object} arg - Provided by Eleventy at runtime */
+		return function(arg) {
+			debugDev('rendering... received arg: %O',	arg)
+			debug(	 'about to render... file: %O', 	filename)
+			if (arg.content) { debugDev('about to render... content: %s', 	arg.content) }
+			debugDev('about to render... eleventy: %O', arg.eleventy)
+			debug(	 'about to render... page: %O', 	arg.page)
 
-			const { content, eleventy, page } = arg
-			debug('about to render... file: %O', 		resInputPath)
-			debugDev('about to render... content: %s', 	content)
-			debug('about to render... page: %O', 		page)
-			debugDev('about to render... eleventy: %O', eleventy)
-
+			//  contents of `_data/`
+			const GLOBAL_DATA_FILES_CONTENT = arg.collections.all[0].data
 
 			const options = {
 				...this.options,
-				filename: 	resInputPath,
-				globals: 	[ ...Object.keys(this.globals) ],
-				eleventy,
-				page
+				filename,
+				...arg,
+				GLOBAL_DATA_FILES_CONTENT
 			}
-			debugDev('options for %s: %O', resInputPath, options)
+			debugDev('options for %s: %O', filename, options)
+
 			//	simplest path to get this working...
 			//	but `pug.compile()` returns a function that can
 			//	be cached.
