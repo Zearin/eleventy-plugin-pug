@@ -13,7 +13,6 @@ import {
 
 //	test subjects
 import plugin from '../index.js'
-import EleventyPugExtension from '../extension.js'
 import Eleventy from '@11ty/eleventy'
 import UserConfig from '@11ty/eleventy/src/UserConfig.js'
 

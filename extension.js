@@ -2,33 +2,17 @@ import path	from 'node:path'
 import pug	from 'pug'
 import debugUtil from 'debug'
 import DEFAULT_PUG_OPTIONS from './defaults.js'
-import UserConfig from '@11ty/eleventy/src/UserConfig.js'
 
 
 const debug 	= debugUtil('Eleventy:Plugins:Pug')
 const debugDev 	= debugUtil('Dev:Eleventy:Plugins:Pug')
 
 
-export class EleventyPugExtension {
-	static DEFAULT_PUG_OPTIONS = DEFAULT_PUG_OPTIONS
-	outputFileExtension = 'html'
+export default {
+	outputFileExtension: 'html',
+	options: DEFAULT_PUG_OPTIONS,
 
-	/**
-	 *	@param {UserConfig} eleventyConfig
-	 *	@param {Object} [opts] - Options for this plugin and Pug
-	 */
-	constructor(eleventyConfig, opts = DEFAULT_PUG_OPTIONS) {
-		this.eleventyConfig = eleventyConfig
-		this.options = opts
-
-		//	Update Pug options based on eleventyConfig
-		this.options.basedir ??= path.resolve(
-			eleventyConfig.dir.input,
-			eleventyConfig.dir.includes
-		)
-	}
-
-	// async init(opts = this.options) {}
+	// async init() {},
 
 	/**
 	 *	Provides runtime Pug compilation for Eleventy.
@@ -36,7 +20,7 @@ export class EleventyPugExtension {
 	 *	@param {String} inputPath   - Path of the input file
 	 *	@returns {String} The resulting code returned by Pug (currently, `pug.render()`).
 	 */
-	compile(inputSource, inputPath) {
+	async compile(inputSource, inputPath) {
 		debugDev('inputSource: %s', inputSource)
 		debugDev('inputPath: %s',	inputPath)
 
@@ -45,8 +29,13 @@ export class EleventyPugExtension {
 		const filename = path.resolve('.', inputPath)
 		debug('compile resolved inputPath to filename: %s', filename)
 
+		//	@TODO: Register Pug template dependencies for caching & performance
+		//
+		//	https://www.11ty.dev/docs/languages/custom/#registering-dependencies
+		//
+
 		/** @param {Object} arg - Provided by Eleventy at runtime */
-		return function(arg) {
+		return async function(arg) {
 			debugDev('rendering... received arg: %O',	arg)
 			debug(	 'about to render... file: %O', 	filename)
 			if (arg.content) { debugDev('about to render... content: %s', 	arg.content) }
@@ -73,5 +62,3 @@ export class EleventyPugExtension {
 		}
 	}
 }
-
-export default EleventyPugExtension
