@@ -62,8 +62,14 @@ describe('SCENARIO: Minimal possible setup', function() {
 				if (fs.existsSync(output)) {
 					fs.renameSync(
 						output,
-						path.resolve(TRASH, '_site')
+						path.resolve(TRASH, `_site__${(new Date()).toISOString()}`)
 					)
+				}
+			})
+
+			after(function() {
+				if (fs.existsSync(output)) {
+					fs.rmSync(output, { recursive: true, force: true})
 				}
 			})
 
