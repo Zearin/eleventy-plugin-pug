@@ -1,13 +1,13 @@
 /** @type {import('@types/eslint').ESLint} */
-export default {
+module.exports = {
 	root: true,
 	env: {
 		node: true,
-		es2022: true,
+		es2023: true,
 	},
 	extends: "eslint:recommended",
 	parserOptions: {
-		ecmaVersion: 13,
+		ecmaVersion: 14,
 		sourceType: "module",
 	},
 
