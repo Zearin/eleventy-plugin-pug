@@ -1,7 +1,6 @@
 /*	eslint-disable no-unused-vars	*/
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
-import fsasync from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import {
@@ -29,9 +28,6 @@ describe('SCENARIO: Global Data', function() {
 
 	context('GIVEN some global data', function() {
 		before(function() {
-			// console.log(`process.cwd(): ${process.cwd()}`)
-			// console.log(`import.meta: %O`, import.meta)
-
 			//	cleanup output from previous test run
 			if (fs.existsSync(output)) {
 				fs.renameSync(
@@ -49,13 +45,6 @@ describe('SCENARIO: Global Data', function() {
 		// 		fs.rmSync(output, { recursive: true, force: true })
 		// 	}
 		// })
-
-		//
-		//	TODO
-		//	- [x] clean up "tinkering" code
-		//	- [ ] publish and create GH Issue
-		//	- [ ] ask Zach on Mastodon; (include Issue #)
-
 		let eleventyInstance = new Eleventy(input, output, options)
 
 		it('The compilation can use the data ', async function() {
