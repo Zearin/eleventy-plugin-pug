@@ -1,5 +1,5 @@
 /**
- * @fileoverview Plugin for Eleventy 3. Provides support for Pug templates.
+ *	@fileoverview Plugin for Eleventy 3. Provides support for Pug templates.
  */
 // import debugUtil from 'debug'
 import path from 'node:path'
@@ -11,13 +11,17 @@ import EleventyPugExtension from './extension.js'
 
 
 /**
- * @typedef {import('@11ty/eleventy/src/UserConfig.js'))} UserConfig
+ *	@typedef {import('@11ty/eleventy/src/UserConfig.js')} UserConfig
  */
 
+//	TODO: 	Group Pug-only options under `pugOptions`, and
+//			add `eleventyOptions` with options to customize
+//			Eleventy’s behavior (e.g., fine-grained control of caching,
+//			for instance).
 
 /**
- * @param {UserConfig} eleventyConfig
- * @param {Object} [options={}]
+ *	@param {UserConfig} eleventyConfig
+ *	@param {Object} [options = {}]
  */
 export default function EleventyPluginPug(eleventyConfig, options = {}) {
 
