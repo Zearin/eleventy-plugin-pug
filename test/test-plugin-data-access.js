@@ -51,8 +51,8 @@ describe('SCENARIO: Global Data', function() {
 		// })
 
 		//
-		//	TODO WHEN YOU GET BACK
-		//	- [ ] clean up "tinkering" code
+		//	TODO
+		//	- [x] clean up "tinkering" code
 		//	- [ ] publish and create GH Issue
 		//	- [ ] ask Zach on Mastodon; (include Issue #)
 

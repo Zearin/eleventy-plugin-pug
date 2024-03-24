@@ -1,6 +1,7 @@
 import path	from 'node:path'
-import pug	from 'pug'
 import debugUtil from 'debug'
+import pug	from 'pug'
+
 import DEFAULT_PUG_OPTIONS from './defaults.js'
 
 
@@ -12,7 +13,10 @@ export default {
 	outputFileExtension: 'html',
 	options: DEFAULT_PUG_OPTIONS,
 
-	// async init() {},
+	async init() {
+		debug('Plugin initialized.')
+		debugDev('%O', this)
+	},
 
 	/**
 	 *	Provides runtime Pug compilation for Eleventy.
@@ -24,41 +28,49 @@ export default {
 		debugDev('inputSource: %s', inputSource)
 		debugDev('inputPath: %s',	inputPath)
 
+		//	@TODO:	Determine if Eleventy provides a built-in way to
+		//			detect when rendering a layout.
+
 		//	sometimes this is a layout, in which case it will
 		//	not be the same as `page.inputPath` (see `page`, below).
-		const filename = path.resolve('.', inputPath)
-		debug('compile resolved inputPath to filename: %s', filename)
+		//
+		// const filename = path.resolve('.', inputPath)
+		// debug('compile resolved inputPath to filename: %s', filename)
 
 		//	@TODO: Register Pug template dependencies for caching & performance
 		//
 		//	https://www.11ty.dev/docs/languages/custom/#registering-dependencies
-		//
 
-		/** @param {Object} arg - Provided by Eleventy at runtime */
+		/** @param {Object} arg - Provided by Eleventy at runtime	*/
 		return async function(arg) {
-			debugDev('rendering... received arg: %O',	arg)
-			debug(	 'about to render... file: %O', 	filename)
-			if (arg.content) { debugDev('about to render... content: %s', 	arg.content) }
-			debugDev('about to render... eleventy: %O', arg.eleventy)
-			debug(	 'about to render... page: %O', 	arg.page)
+			debugDev('rendering... received arg: %O',		arg)
+			debug(	 'about to render... inputPath: %O', 	inputPath)
 
-			//  contents of `_data/`
-			const GLOBAL_DATA_FILES_CONTENT = arg.collections.all[0].data
+			//	TODO: clean up the setup and updating of options
+			const renderOptions = Object.assign(
+				{},
+				{
+					basedir: 	arg.eleventy.directories.includes,
+					filename: 	inputPath,
+				},
+				arg
+			)
 
-			const options = {
-				...this.options,
-				filename,
-				...arg,
-				GLOBAL_DATA_FILES_CONTENT
-			}
-			debugDev('options for %s: %O', filename, options)
+			// console.log('\n\nrenderOptions: %O\n\n', renderOptions)
 
-			//	simplest path to get this working...
-			//	but `pug.compile()` returns a function that can
-			//	be cached.
-			//
-			//	might that speed up build times for large projects?
-			return pug.render(inputSource, options)
+			/*
+			 *	Using `pug.render()` is the simplest path to get this plugin working.
+			 *
+			 *	However:
+			 *		- `pug.compile()` returns a function that can be cached.
+			 *			- @see: `CustomEngine.getCompileCacheKey()`
+			 *			- would this actually speed up build times for large projects?
+			 *
+			 *  	- `pug.compileClientWithDependenciesTracked()` might be used
+			 * 			to register	dependencies via
+			 * 			`this.addDependencies(inputPath, depsList)`.
+			 */
+			return pug.render(inputSource, renderOptions)
 		}
 	}
 }
