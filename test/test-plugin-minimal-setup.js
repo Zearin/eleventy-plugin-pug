@@ -39,23 +39,15 @@ describe('SCENARIO: Minimal possible setup', function() {
 	})
 
 	context('GIVEN a minimal project and config', function() {
-		const HOME		= os.homedir()
-		const TRASH 	= path.resolve(HOME, '.Trash')
-
 		const MINIMAL_PROJECT_PATH = path.resolve(import.meta.dirname, 'stubs/minimal')
 		const input		= path.resolve(MINIMAL_PROJECT_PATH, '_src')
 		const output	= path.resolve(MINIMAL_PROJECT_PATH, '_site')
 		const options	= {
 			configPath: path.resolve(MINIMAL_PROJECT_PATH, 'eleventy.config.js')
 		}
-		// console.debug({
-		// 	HOME,
-		// 	TRASH,
-		// 	MINIMAL_PROJECT_PATH,
-		// 	input,
-		// 	output,
-		// 	options
-		// })
+		//	@FIXME: macOS-specific
+		const TRASH 	= path.resolve(os.homedir(), '.Trash')
+
 
 		context('WHEN we instantiate Eleventy', function(){
 			before(function() {
@@ -67,11 +59,14 @@ describe('SCENARIO: Minimal possible setup', function() {
 				}
 			})
 
-			after(function() {
-				if (fs.existsSync(output)) {
-					fs.rmSync(output, { recursive: true, force: true})
-				}
-			})
+			// after(function() {
+			//	/* ⚠️ 	CAUTION:
+			//	 *		Dangerous if you mess with the paths above!
+			//	 */
+			// 	if (fs.existsSync(output)) {
+			// 		fs.rmSync(output, { recursive: true, force: true })
+			// 	}
+			// })
 
 			let eleventyInstance = new Eleventy(input, output, options)
 
@@ -85,8 +80,5 @@ describe('SCENARIO: Minimal possible setup', function() {
 	})
 })
 
-describe.todo('SCENARIO: Simple setup with 1 layout', function() {})
-
 describe.todo('SCENARIO: Multiple layouts', function() {})
 
-describe.todo('SCENARIO: Global Data', function() {})

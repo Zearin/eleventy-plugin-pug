@@ -1,13 +1,9 @@
 /**
  *	@fileoverview Plugin for Eleventy 3. Provides support for Pug templates.
  */
-// import debugUtil from 'debug'
-import path from 'node:path'
 import EleventyPugExtension from './extension.js'
 
 
-// const debug 	= debugUtil('Eleventy:Plugins:Pug')
-// const devDebug 	= debugUtil('Dev:Eleventy:Plugins:Pug')
 
 
 /**
@@ -30,12 +26,14 @@ export default function EleventyPluginPug(eleventyConfig, options = {}) {
 
 	// Prepare extension object
 	const PugExtension = EleventyPugExtension
-	PugExtension.options.basedir =
-		options?.basedir
-		??  path.resolve(
-			eleventyConfig.dir.input,
-			eleventyConfig.dir.includes
-		)
+	PugExtension.options = Object.assign(PugExtension.options, options)
+
+	// PugExtension.options.basedir =
+	// 	options?.basedir
+	// 	??  path.normalize(
+	// 		eleventyConfig.dir.input,
+	// 		eleventyConfig.dir.includes
+	// 	)
 
 	// Specify behavior for `*.pug` files
 	eleventyConfig.addExtension('pug', PugExtension)
