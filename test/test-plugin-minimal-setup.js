@@ -1,3 +1,4 @@
+/*	eslint-disable no-unused-vars	*/
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import fsasync from 'node:fs/promises'
