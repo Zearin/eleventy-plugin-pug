@@ -46,16 +46,14 @@ describe('SCENARIO: Minimal possible setup', function() {
 		const options	= {
 			configPath: path.resolve(MINIMAL_PROJECT_PATH, 'eleventy.config.js')
 		}
-		//	@FIXME: macOS-specific
-		const TRASH 	= path.resolve(os.homedir(), '.Trash')
 
 
 		context('WHEN we instantiate Eleventy', function(){
 			before(function() {
 				if (fs.existsSync(output)) {
-					fs.renameSync(
+					fs.rmdirSync(
 						output,
-						path.resolve(TRASH, `_site__${(new Date()).toISOString()}`)
+						{ recursive: true }
 					)
 				}
 			})
@@ -82,4 +80,3 @@ describe('SCENARIO: Minimal possible setup', function() {
 })
 
 describe.todo('SCENARIO: Multiple layouts', function() {})
-

@@ -22,17 +22,15 @@ describe('SCENARIO: Global Data', function() {
 	const options	= {
 		configPath: path.resolve(GLOBAL_DATA_PROJECT_PATH, 'eleventy.config.js')
 	}
-	//	@FIXME: macOS-specific
-	const TRASH 	= path.resolve(os.homedir(), '.Trash')
 
 
 	context('GIVEN some global data', function() {
 		before(function() {
 			//	cleanup output from previous test run
 			if (fs.existsSync(output)) {
-				fs.renameSync(
+				fs.rmdirSync(
 					output,
-					path.resolve(TRASH, `_site__${(new Date()).toISOString()}`)
+					{ recursive: true }
 				)
 			}
 		})
