@@ -1,3 +1,3 @@
-export default function (someNumber) {
-	return someNumber * 100
+export default function () {
+	return (someNumber) => someNumber * 100
 }
