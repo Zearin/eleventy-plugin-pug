@@ -38,8 +38,7 @@ export default {
 		// debug('compile resolved inputPath to filename: %s', filename)
 
 		//	@TODO: Register Pug template dependencies for caching & performance
-		//
-		//	https://www.11ty.dev/docs/languages/custom/#registering-dependencies
+		//	@see	https://www.11ty.dev/docs/languages/custom/#registering-dependencies
 
 		/** @param {Object} arg - Provided by Eleventy at runtime	*/
 		return async function(arg) {
@@ -62,13 +61,11 @@ export default {
 			 *	Using `pug.render()` is the simplest path to get this plugin working.
 			 *
 			 *	However:
-			 *		- `pug.compile()` returns a function that can be cached.
+			 *		- `pug.compile()` returns a function that can be cached,
+			 *			_and_ that function has a `.dependencies` property!
+			 *
 			 *			- @see: `CustomEngine.getCompileCacheKey()`
 			 *			- would this actually speed up build times for large projects?
-			 *
-			 *  	- `pug.compileClientWithDependenciesTracked()` might be used
-			 * 			to register	dependencies via
-			 * 			`this.addDependencies(inputPath, depsList)`.
 			 */
 			return pug.render(inputSource, renderOptions)
 		}
