@@ -1,6 +1,6 @@
 {
   "name": "@11ty/eleventy-plugin-pug",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Pug templates for Eleventy 3!",
   "private": true,
   "keywords": [
