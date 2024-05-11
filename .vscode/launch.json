@@ -1,0 +1,25 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run Eleventy CLI for 'test/stubs/minimal'",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+			"env": {
+				"DEBUG": "'Eleventy:Plugins:Pug,Dev:Eleventy:Plugins:Pug'",
+				// "DEBUG": "Eleventy,Eleventy*,Eleventy:Plugins:Pug,Dev:Eleventy:Plugins:Pug",
+			},
+			"cwd": "${workspaceFolder}/test/stubs/minimal",
+            "program": "${workspaceFolder}/node_modules/.bin/eleventy",
+			"args": [],
+			"console": "integratedTerminal"
+        }
+    ]
+}

@@ -1,3 +1,6 @@
+#	Test stuff
+/test-stubs/*/_site/
+
 #-------------------------------------------------------------------
 #   github/gitignore : Node.gitignore
 #
