@@ -1,5 +1,5 @@
 /*	eslint-disable no-unused-vars	*/
-import assert from 'node:assert/strict'
+import {strict as assert} from 'node:assert'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
@@ -15,19 +15,19 @@ import {
 import Eleventy from '@11ty/eleventy'
 
 
-describe.only('SCENARIO: Global Data Function', function() {
-	const GLOBAL_DATA_PROJECT_PATH 	= path.resolve(import.meta.dirname, 'stubs/data-functions')
-	const input						= path.resolve(GLOBAL_DATA_PROJECT_PATH, '_src')
-	const output					= path.resolve(GLOBAL_DATA_PROJECT_PATH, '_site')
+describe('SCENARIO: Global Data Function', function() {
+	const GLOBAL_DATA_PROJECT_PATH 	= './test-stubs/data-functions'
+	const input						= path.join(GLOBAL_DATA_PROJECT_PATH, '_src')
+	const output					= path.join(GLOBAL_DATA_PROJECT_PATH, '_site')
 	const options	= {
-		configPath: path.resolve(GLOBAL_DATA_PROJECT_PATH, 'eleventy.config.js')
+		configPath: path.relative(process.cwd(), GLOBAL_DATA_PROJECT_PATH) + '/eleventy.config.js'
 	}
 	//	@FIXME: macOS-specific
 	const TRASH 	= path.resolve(os.homedir(), '.Trash')
 
 
 	context('GIVEN a function export from global data', function() {
-		before(function() {
+		before(function cleanPreviousTestOutputDirs() {
 			//	cleanup output from previous test run
 			if (fs.existsSync(output)) {
 				fs.renameSync(

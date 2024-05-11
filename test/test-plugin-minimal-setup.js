@@ -1,5 +1,5 @@
 /*	eslint-disable no-unused-vars	*/
-import assert from 'node:assert/strict'
+import {strict as assert} from 'node:assert'
 import fs from 'node:fs'
 import fsasync from 'node:fs/promises'
 import os from 'node:os'
@@ -40,18 +40,18 @@ describe('SCENARIO: Minimal possible setup', function() {
 	})
 
 	context('GIVEN a minimal project and config', function() {
-		const MINIMAL_PROJECT_PATH = path.resolve(import.meta.dirname, 'stubs/minimal')
-		const input		= path.resolve(MINIMAL_PROJECT_PATH, '_src')
-		const output	= path.resolve(MINIMAL_PROJECT_PATH, '_site')
+		const GLOBAL_DATA_PROJECT_PATH 	= './test-stubs/minimal'
+		const input						= path.join(GLOBAL_DATA_PROJECT_PATH, '_src')
+		const output					= path.join(GLOBAL_DATA_PROJECT_PATH, '_site')
 		const options	= {
-			configPath: path.resolve(MINIMAL_PROJECT_PATH, 'eleventy.config.js')
+			configPath: path.relative(process.cwd(), GLOBAL_DATA_PROJECT_PATH) + '/eleventy.config.js'
 		}
 		//	@FIXME: macOS-specific
 		const TRASH 	= path.resolve(os.homedir(), '.Trash')
 
 
-		context('WHEN we instantiate Eleventy', function(){
-			before(function() {
+		context('WHEN we instantiate Eleventy', function() {
+			before(function cleanPreviousTestOutputDirs() {
 				if (fs.existsSync(output)) {
 					fs.renameSync(
 						output,
@@ -73,7 +73,7 @@ describe('SCENARIO: Minimal possible setup', function() {
 
 			it('Can build a Pug file', async function() {
 				await eleventyInstance.executeBuild()
-				assert(fs.existsSync(output), `output did not exist: ${output}`)
+				await assert(fs.existsSync(output), `output did not exist: “${output}”\n`)
 				assert(fs.existsSync(path.resolve(output, 'index.html')))
 			})
 
